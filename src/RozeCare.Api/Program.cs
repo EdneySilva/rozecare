@@ -2,7 +2,12 @@ using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Instrumentation.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using RozeCare.Application;
 using RozeCare.Application.Common.Interfaces;
@@ -76,15 +81,39 @@ builder.Services.AddSwaggerGen(options =>
     }
 });
 
-builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
+builder.Services
+    .AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>(
+        name: "db",
+        failureStatus: HealthStatus.Unhealthy,
+        tags: new[] { "ready", "live" });
 
-builder.Services.AddOpenTelemetry().WithTracing(tracing =>
-{
-    tracing.AddAspNetCoreInstrumentation();
-    tracing.AddHttpClientInstrumentation();
-    tracing.AddEntityFrameworkCoreInstrumentation();
-    tracing.AddConsoleExporter();
-});
+builder.Services
+    .AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService("RozeCare.Api"))
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation(options =>
+            {
+                options.SetDbStatementForText = true;
+                options.SetDbStatementForStoredProcedure = true;
+                options.EnrichWithIDbCommand = (activity, command) =>
+                {
+                    // activity.SetTag("db.params.count", command.Parameters?.Count);
+                };
+            })
+            .AddConsoleExporter();
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddRuntimeInstrumentation();
+    });
 
 builder.Services.AddSingleton<ConsentScopeResolver>();
 
