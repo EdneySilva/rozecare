@@ -25,3 +25,4 @@ web/roze-pwa/.vite/
 # Env
 *.env
 web/roze-pwa/.env.local
+/.vs/RozeCare

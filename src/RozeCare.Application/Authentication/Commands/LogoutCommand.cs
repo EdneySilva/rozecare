@@ -5,7 +5,7 @@ using RozeCare.Application.Common.Interfaces;
 
 namespace RozeCare.Application.Authentication.Commands;
 
-public record LogoutCommand(Guid UserId, string RefreshToken) : IRequest;
+public record LogoutCommand(Guid UserId, string RefreshToken) : IRequest<Unit>;
 
 public class LogoutCommandValidator : AbstractValidator<LogoutCommand>
 {
@@ -16,7 +16,7 @@ public class LogoutCommandValidator : AbstractValidator<LogoutCommand>
     }
 }
 
-public class LogoutCommandHandler : IRequestHandler<LogoutCommand>
+public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
 {
     private readonly IApplicationDbContext _context;
 
