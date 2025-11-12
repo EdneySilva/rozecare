@@ -6,7 +6,7 @@ using RozeCare.Domain.Enums;
 
 namespace RozeCare.Application.Consents.Commands;
 
-public record RevokeConsentCommand(Guid PatientId, Guid ConsentId) : IRequest;
+public record RevokeConsentCommand(Guid PatientId, Guid ConsentId) : IRequest<Unit>;
 
 public class RevokeConsentCommandValidator : AbstractValidator<RevokeConsentCommand>
 {
@@ -17,7 +17,7 @@ public class RevokeConsentCommandValidator : AbstractValidator<RevokeConsentComm
     }
 }
 
-public class RevokeConsentCommandHandler : IRequestHandler<RevokeConsentCommand>
+public class RevokeConsentCommandHandler : IRequestHandler<RevokeConsentCommand, Unit>
 {
     private readonly IApplicationDbContext _context;
 

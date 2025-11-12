@@ -5,7 +5,13 @@ using RozeCare.Application.Common.Interfaces;
 
 namespace RozeCare.Application.Patients.Commands;
 
-public record UpdateMyProfileCommand(Guid UserId, string? BloodType, IReadOnlyCollection<string> Conditions, IReadOnlyCollection<string> Allergies, IReadOnlyCollection<string> EmergencyContacts, IReadOnlyCollection<string> PreferredProviders) : IRequest;
+public record UpdateMyProfileCommand(
+    Guid UserId,
+    string? BloodType,
+    IReadOnlyCollection<string> Conditions,
+    IReadOnlyCollection<string> Allergies,
+    IReadOnlyCollection<string> EmergencyContacts,
+    IReadOnlyCollection<string> PreferredProviders) : IRequest<Unit>;
 
 public class UpdateMyProfileCommandValidator : AbstractValidator<UpdateMyProfileCommand>
 {
@@ -15,7 +21,7 @@ public class UpdateMyProfileCommandValidator : AbstractValidator<UpdateMyProfile
     }
 }
 
-public class UpdateMyProfileCommandHandler : IRequestHandler<UpdateMyProfileCommand>
+public class UpdateMyProfileCommandHandler : IRequestHandler<UpdateMyProfileCommand, Unit>
 {
     private readonly IApplicationDbContext _context;
 
