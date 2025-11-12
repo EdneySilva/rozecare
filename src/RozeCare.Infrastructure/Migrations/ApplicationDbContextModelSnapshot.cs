@@ -18,8 +18,6 @@ namespace RozeCare.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<Guid>", b =>
             {
                 b.Property<Guid>("Id")
@@ -47,8 +45,6 @@ namespace RozeCare.Infrastructure.Migrations
                 b.Property<int>("Id")
                     .ValueGeneratedOnAdd();
 
-                Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
                 b.Property<string>("ClaimType");
 
                 b.Property<string>("ClaimValue");
@@ -66,8 +62,6 @@ namespace RozeCare.Infrastructure.Migrations
             {
                 b.Property<int>("Id")
                     .ValueGeneratedOnAdd();
-
-                Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                 b.Property<string>("ClaimType");
 

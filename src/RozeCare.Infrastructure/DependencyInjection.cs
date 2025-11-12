@@ -23,7 +23,12 @@ public static class DependencyInjection
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("Default"));
+            options.UseNpgsql(
+                configuration.GetConnectionString("Default"),
+                npgsql =>
+                {
+                    npgsql.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+                });
         });
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
