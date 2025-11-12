@@ -1,0 +1,27 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+
+# Node
+node_modules/
+web/roze-pwa/node_modules/
+web/roze-pwa/dist/
+web/roze-pwa/.vite/
+
+# Docker
+**/Dockerfile.*
+
+# VS Code
+.vscode/
+
+# Env
+*.env
+web/roze-pwa/.env.local
