@@ -15,7 +15,7 @@ public interface IApplicationDbContext
     DbSet<Document> Documents { get; }
     DbSet<Consent> Consents { get; }
     DbSet<AuditLog> AuditLogs { get; }
-    DbSet<UserRefreshToken> RefreshTokens { get; }
+    DbSet<UserRefreshToken> UserRefreshTokens { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

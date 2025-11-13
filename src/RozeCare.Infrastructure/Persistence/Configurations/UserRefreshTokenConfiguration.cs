@@ -8,6 +8,8 @@ public class UserRefreshTokenConfiguration : IEntityTypeConfiguration<UserRefres
 {
     public void Configure(EntityTypeBuilder<UserRefreshToken> builder)
     {
+        builder.ToTable("UserRefreshTokens");
+
         builder.Property(x => x.Token)
             .IsRequired()
             .HasMaxLength(2048);

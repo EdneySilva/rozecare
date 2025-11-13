@@ -22,7 +22,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Document> Documents => Set<Document>();
     public DbSet<Consent> Consents => Set<Consent>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
-    public DbSet<UserRefreshToken> RefreshTokens => Set<UserRefreshToken>();
+    public DbSet<UserRefreshToken> UserRefreshTokens => Set<UserRefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
