@@ -29,7 +29,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, T
 
     public async Task<TokenResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        var token = await _context.RefreshTokens
+        var token = await _context.UserRefreshTokens
             .Include(t => t.User)
             .FirstOrDefaultAsync(t => t.UserId == request.UserId && t.Token == request.RefreshToken && !t.IsRevoked, cancellationToken);
 

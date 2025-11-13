@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RozeCare.Application.Common.Interfaces;
@@ -45,7 +46,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
         var refreshToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         var refresh = UserRefreshToken.Create(user.Id, refreshToken, now.AddDays(_options.RefreshTokenDays));
-        _context.RefreshTokens.Add(refresh);
+        await _context.UserRefreshTokens.AddAsync(refresh, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return new TokenResult(accessToken, refreshToken, token.ValidTo);
@@ -53,7 +54,8 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
     public async Task RevokeRefreshTokenAsync(Guid userId, string refreshToken, CancellationToken cancellationToken = default)
     {
-        var existing = _context.RefreshTokens.FirstOrDefault(r => r.UserId == userId && r.Token == refreshToken);
+        var existing = await _context.UserRefreshTokens
+            .FirstOrDefaultAsync(r => r.UserId == userId && r.Token == refreshToken, cancellationToken);
         if (existing is null)
         {
             return;
