@@ -8,7 +8,16 @@ public class UserRefreshTokenConfiguration : IEntityTypeConfiguration<UserRefres
 {
     public void Configure(EntityTypeBuilder<UserRefreshToken> builder)
     {
-        builder.Property(x => x.Token).HasMaxLength(500);
-        builder.HasIndex(x => new { x.UserId, x.Token }).IsUnique();
+        builder.Property(x => x.Token)
+            .IsRequired()
+            .HasMaxLength(2048);
+
+        builder.Property(x => x.IsRevoked)
+            .HasDefaultValue(false);
+
+        builder.HasIndex(x => x.UserId);
+
+        builder.HasIndex(x => x.Token)
+            .IsUnique();
     }
 }
