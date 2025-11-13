@@ -17,6 +17,6 @@ public abstract class BaseAuditableEntity
 
     public Guid? UpdatedBy { get; set; }
         = null;
-
-    public List<DomainEvent> DomainEvents { get; } = new();
+    // TODO: AVALIAR como utilizar essa propriedade
+    //public List<DomainEvent> DomainEvents { get; } = new();
 }
