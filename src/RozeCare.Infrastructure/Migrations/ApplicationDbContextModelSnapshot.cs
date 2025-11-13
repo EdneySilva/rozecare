@@ -538,13 +538,14 @@ namespace RozeCare.Infrastructure.Migrations
 
                 b.Property<DateTime>("CreatedAtUtc");
 
-                b.Property<bool>("IsRevoked");
+                b.Property<bool>("IsRevoked")
+                    .HasDefaultValue(false);
 
                 b.Property<Guid>("UserId");
 
                 b.Property<string>("Token")
                     .IsRequired()
-                    .HasMaxLength(500);
+                    .HasMaxLength(2048);
 
                 b.Property<Guid?>("UpdatedBy");
 
@@ -554,7 +555,9 @@ namespace RozeCare.Infrastructure.Migrations
 
                 b.HasKey("Id");
 
-                b.HasIndex("UserId", "Token")
+                b.HasIndex("UserId");
+
+                b.HasIndex("Token")
                     .IsUnique();
 
                 b.ToTable("UserRefreshTokens");
