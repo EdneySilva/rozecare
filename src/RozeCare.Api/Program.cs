@@ -19,11 +19,11 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, configuration) =>
-{
-    configuration.ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext();
-});
+//builder.Host.UseSerilog((context, configuration) =>
+//{
+//    configuration.ReadFrom.Configuration(context.Configuration)
+//        .Enrich.FromLogContext();
+//});
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -133,7 +133,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseCors("default");
 app.UseAuthentication();
