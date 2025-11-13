@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.IdentityModel.JsonWebTokens;
 using RozeCare.Api.Services;
 using RozeCare.Application.Common.Interfaces;
 
