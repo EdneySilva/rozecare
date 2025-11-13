@@ -15,7 +15,10 @@ public static class ApplicationDbContextSeeder
         {
             foreach (var role in Enum.GetNames<UserRole>())
             {
-                context.Roles.Add(new IdentityRole<Guid>(role));
+                context.Roles.Add(new IdentityRole<Guid>(role)
+                {
+                    NormalizedName = role.ToUpper()
+                });
             }
             await context.SaveChangesAsync();
         }
