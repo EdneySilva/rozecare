@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RozeCare.Application.Authentication.Commands;
+using RozeCare.Application.Common.Interfaces;
 using RozeCare.Domain.Enums;
 
 namespace RozeCare.Api.Controllers;
