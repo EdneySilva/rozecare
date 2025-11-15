@@ -1,31 +1,44 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RozeCare.Domain.Entities;
 
 namespace RozeCare.Infrastructure.Persistence.Configurations;
 
-public class PatientProfileConfiguration : IEntityTypeConfiguration<PatientProfile>
+public sealed class PatientProfileConfiguration : IEntityTypeConfiguration<PatientProfile>
 {
     public void Configure(EntityTypeBuilder<PatientProfile> builder)
     {
-        builder.Property(p => p.Conditions)
-            .HasConversion(
-                v => string.Join(';', v),
-                v => string.IsNullOrEmpty(v) ? new List<string>() : v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList());
+        builder.ToTable("PatientProfiles");
 
-        builder.Property(p => p.Allergies)
-            .HasConversion(
-                v => string.Join(';', v),
-                v => string.IsNullOrEmpty(v) ? new List<string>() : v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList());
+        builder.HasKey(x => x.Id);
 
-        builder.Property(p => p.PreferredProviders)
-            .HasConversion(
-                v => string.Join(';', v),
-                v => string.IsNullOrEmpty(v) ? new List<string>() : v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList());
+        builder.Property(x => x.BloodType)
+            .HasMaxLength(8);
 
-        builder.Property(p => p.EmergencyContacts)
-            .HasConversion(
-                v => string.Join(';', v),
-                v => string.IsNullOrEmpty(v) ? new List<string>() : v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList());
+        var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+
+        var listToJsonConverter = new ValueConverter<List<string>, string>(
+            v => JsonSerializer.Serialize(v, jsonOptions),
+            v => string.IsNullOrWhiteSpace(v)
+                ? new List<string>()
+                : JsonSerializer.Deserialize<List<string>>(v, jsonOptions)!);
+
+        builder.Property(x => x.Conditions)
+            .HasColumnType("jsonb")
+            .HasConversion(listToJsonConverter);
+
+        builder.Property(x => x.Allergies)
+            .HasColumnType("jsonb")
+            .HasConversion(listToJsonConverter);
+
+        builder.Property(x => x.PreferredProviders)
+            .HasColumnType("jsonb")
+            .HasConversion(listToJsonConverter);
+
+        builder.Property(x => x.EmergencyContacts)
+            .HasColumnType("jsonb")
+            .HasConversion(listToJsonConverter);
     }
 }

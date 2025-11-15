@@ -284,7 +284,8 @@ namespace RozeCare.Infrastructure.Migrations
                 b.Property<Guid>("PatientId");
 
                 b.Property<string>("Scopes")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("jsonb");
 
                 b.Property<string>("Status")
                     .IsRequired()
@@ -331,7 +332,8 @@ namespace RozeCare.Infrastructure.Migrations
                 b.Property<long>("Size");
 
                 b.Property<string>("Tags")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("jsonb");
 
                 b.Property<Guid?>("UpdatedBy");
 
@@ -358,7 +360,8 @@ namespace RozeCare.Infrastructure.Migrations
                 b.Property<DateTime>("Date");
 
                 b.Property<string>("Diagnoses")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("jsonb");
 
                 b.Property<Guid>("PatientId");
 
@@ -368,7 +371,8 @@ namespace RozeCare.Infrastructure.Migrations
                     .IsRequired();
 
                 b.Property<string>("Prescriptions")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("jsonb");
 
                 b.Property<Guid?>("UpdatedBy");
 
@@ -462,22 +466,27 @@ namespace RozeCare.Infrastructure.Migrations
                     .ValueGeneratedOnAdd();
 
                 b.Property<string>("Allergies")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("jsonb");
 
-                b.Property<string>("BloodType");
+                b.Property<string>("BloodType")
+                    .HasMaxLength(8);
 
                 b.Property<string>("Conditions")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("jsonb");
 
                 b.Property<Guid?>("CreatedBy");
 
                 b.Property<DateTime>("CreatedAtUtc");
 
                 b.Property<string>("EmergencyContacts")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("jsonb");
 
                 b.Property<string>("PreferredProviders")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("jsonb");
 
                 b.Property<Guid?>("UpdatedBy");
 
